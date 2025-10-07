@@ -1,0 +1,87 @@
+<resources>
+    <string name="app_name">DailyCare</string>
+    
+    <!-- Onboarding Strings -->
+    <string name="onboarding_welcome_title">Welcome to DailyCare!</string>
+    <string name="onboarding_welcome_subtitle">Let\'s get started on your health journey.</string>
+    <string name="onboarding_features_title">Track Your Wellness</string>
+    <string name="onboarding_features_subtitle">Track your daily habits, log your moods, and stay hydrated with reminders.</string>
+    <string name="onboarding_signin_title">Get Started</string>
+    <string name="onboarding_signin_subtitle">Sign in to your account or create a new one to start tracking your wellness.</string>
+    
+    <!-- Button Strings -->
+    <string name="next">Next</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="log_in">Log In</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    
+    <!-- Auth Strings -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="username_hint">Enter your username</string>
+    <string name="password_hint">Enter your password</string>
+    <string name="account_created">Account created successfully!</string>
+    <string name="login_successful">Welcome back!</string>
+    <string name="invalid_credentials">Invalid username or password</string>
+    <string name="fields_required">Please fill in all fields</string>
+    <string name="username_exists">Username already exists</string>
+    
+    <!-- Navigation Strings -->
+    <string name="habits">Habits</string>
+    <string name="mood_journal">Mood Journal</string>
+    <string name="mood_trends">Mood Trends</string>
+    <string name="hydration">Hydration</string>
+    <string name="profile">Profile</string>
+    
+    <!-- Habit Tracker Strings -->
+    <string name="daily_habits">Daily Habits</string>
+    <string name="add_habit">Add New Habit</string>
+    <string name="habit_name">Habit Name</string>
+    <string name="habit_name_hint">E.g., Drink 8 glasses of water</string>
+    <string name="habit_added">Habit added successfully!</string>
+    <string name="habit_updated">Habit updated successfully!</string>
+    <string name="habit_deleted">Habit deleted</string>
+    <string name="no_habits">No habits yet. Add your first habit!</string>
+    <string name="mark_complete">Mark Complete</string>
+    <string name="mark_incomplete">Mark Incomplete</string>
+    
+    <!-- Mood Journal Strings -->
+    <string name="today_mood">How are you feeling today?</string>
+    <string name="select_mood">Select your mood</string>
+    <string name="mood_saved">Mood saved for today!</string>
+    <string name="mood_updated">Mood updated!</string>
+    <string name="no_mood_entries">No mood entries yet. Log your first mood!</string>
+    <string name="mood_history">Mood History</string>
+    
+    <!-- Mood Trends Strings -->
+    <string name="mood_trends_title">Your Mood Trends</string>
+    <string name="last_7_days">Last 7 Days</string>
+    <string name="no_mood_data">Not enough mood data to show trends. Log your moods daily!</string>
+    
+    <!-- Hydration Strings -->
+    <string name="hydration_reminder">Hydration Reminder</string>
+    <string name="reminder_interval">Reminder Interval</string>
+    <string name="every_hour">Every Hour</string>
+    <string name="every_2_hours">Every 2 Hours</string>
+    <string name="every_3_hours">Every 3 Hours</string>
+    <string name="reminder_enabled">Reminders Enabled</string>
+    <string name="reminder_disabled">Reminders Disabled</string>
+    <string name="drink_water_title">Time to Hydrate!</string>
+    <string name="drink_water_message">Don\'t forget to drink water and stay healthy!</string>
+    
+    <!-- Error Messages -->
+    <string name="error_occurred">An error occurred. Please try again.</string>
+    <string name="network_error">Network error. Please check your connection.</string>
+    
+    <!-- Common -->
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="completed">Completed</string>
+    <string name="incomplete">Incomplete</string>
+</resources>

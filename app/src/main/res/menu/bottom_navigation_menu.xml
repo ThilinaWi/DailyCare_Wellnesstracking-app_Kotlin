@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/nav_habit"
+        android:icon="@drawable/ic_habits"
+        android:title="Habit" />
+
+    <item
+        android:id="@+id/nav_mood"
+        android:icon="@drawable/ic_mood"
+        android:title="Mood" />
+
+    <item
+        android:id="@+id/nav_water"
+        android:icon="@drawable/ic_water_drop"
+        android:title="Water" />
+
+    <item
+        android:id="@+id/nav_trend"
+        android:icon="@drawable/ic_trends"
+        android:title="Trend" />
+
+</menu>
