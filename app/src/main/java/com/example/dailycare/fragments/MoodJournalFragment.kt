@@ -66,7 +66,7 @@ class MoodJournalFragment : Fragment() {
     private fun setupExportButton() {
         try {
             binding.btnExportMoods?.setOnClickListener {
-                exportMoodData()
+                shareMoodData()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -304,12 +304,12 @@ class MoodJournalFragment : Fragment() {
         }
     }
     
-    private fun exportMoodData() {
+    private fun shareMoodData() {
         try {
             val moodEntries = preferencesManager.getMoodEntries()
             
             if (moodEntries.isEmpty()) {
-                // Show message that there's no data to export
+                // Show message that there's no data to share
                 showNoDataMessage()
                 return
             }
@@ -318,11 +318,11 @@ class MoodJournalFragment : Fragment() {
             val csvContent = generateMoodDataCSV(moodEntries)
             
             // Share the CSV content
-            shareMoodData(csvContent)
+            shareCSVContent(csvContent)
             
         } catch (e: Exception) {
             e.printStackTrace()
-            showExportErrorMessage()
+            showShareErrorMessage()
         }
     }
     
@@ -363,21 +363,21 @@ class MoodJournalFragment : Fragment() {
         }
     }
     
-    private fun shareMoodData(csvContent: String) {
+    private fun shareCSVContent(csvContent: String) {
         try {
             val shareIntent = android.content.Intent().apply {
                 action = android.content.Intent.ACTION_SEND
                 type = "text/plain"
                 putExtra(android.content.Intent.EXTRA_TEXT, csvContent)
-                putExtra(android.content.Intent.EXTRA_SUBJECT, "My Mood Data Export")
+                putExtra(android.content.Intent.EXTRA_SUBJECT, "My Mood Data Share")
             }
             
-            val chooserIntent = android.content.Intent.createChooser(shareIntent, "Export Mood Data")
+            val chooserIntent = android.content.Intent.createChooser(shareIntent, "Share Mood Data")
             startActivity(chooserIntent)
             
         } catch (e: Exception) {
             e.printStackTrace()
-            showExportErrorMessage()
+            showShareErrorMessage()
         }
     }
     
@@ -385,8 +385,8 @@ class MoodJournalFragment : Fragment() {
         try {
             val context = context ?: return
             android.app.AlertDialog.Builder(context)
-                .setTitle("No Data to Export")
-                .setMessage("You haven't logged any moods yet. Add some mood entries first to export your data.")
+                .setTitle("No Data to Share")
+                .setMessage("You haven't logged any moods yet. Add some mood entries first to share your data.")
                 .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                 .show()
         } catch (e: Exception) {
@@ -394,12 +394,12 @@ class MoodJournalFragment : Fragment() {
         }
     }
     
-    private fun showExportErrorMessage() {
+    private fun showShareErrorMessage() {
         try {
             val context = context ?: return
             android.app.AlertDialog.Builder(context)
-                .setTitle("Export Failed")
-                .setMessage("There was an error exporting your mood data. Please try again.")
+                .setTitle("Share Failed")
+                .setMessage("There was an error sharing your mood data. Please try again.")
                 .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
                 .show()
         } catch (e: Exception) {
