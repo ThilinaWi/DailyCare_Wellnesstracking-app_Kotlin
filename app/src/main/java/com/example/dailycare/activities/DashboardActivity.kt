@@ -22,8 +22,13 @@ class DashboardActivity : AppCompatActivity() {
         
         setupBottomNavigation()
         
-        // Load default fragment
-        if (savedInstanceState == null) {
+        // Handle navigation from notification
+        val navigateTo = intent.getStringExtra("navigate_to")
+        if (navigateTo == "hydration") {
+            binding.bottomNavigation.selectedItemId = R.id.nav_water
+            loadFragment(HydrationFragment())
+        } else if (savedInstanceState == null) {
+            // Load default fragment
             loadFragment(HomeFragment())
         }
     }

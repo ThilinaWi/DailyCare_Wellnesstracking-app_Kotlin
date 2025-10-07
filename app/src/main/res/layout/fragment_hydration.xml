@@ -270,6 +270,163 @@
                 android:layout_gravity="center"
                 android:visibility="gone" />
 
+            <!-- Hydration Reminders Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hydration Reminders"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/secondary_navy_blue"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Enable Reminders Toggle -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="20dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enable Reminders"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/secondary_navy_blue" />
+
+                            <TextView
+                                android:id="@+id/tvReminderStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Inactive - Every 60 minutes"
+                                android:textSize="14sp"
+                                android:textColor="@color/medium_gray"
+                                android:layout_marginTop="2dp" />
+
+                        </LinearLayout>
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchHydrationReminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            app:thumbTint="@color/white"
+                            app:trackTint="@color/accent_cobalt_blue" />
+
+                    </LinearLayout>
+
+                    <!-- Reminder Interval Card -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:cardBackgroundColor="@color/primary_light_blue">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Reminder Interval"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/secondary_navy_blue"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:id="@+id/tvCurrentInterval"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="60 minutes"
+                                android:textSize="18sp"
+                                android:textColor="@color/medium_gray"
+                                android:layout_marginBottom="16dp" />
+
+                            <!-- SeekBar for interval adjustment -->
+                            <SeekBar
+                                android:id="@+id/seekBarInterval"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:max="179"
+                                android:progress="59"
+                                android:progressTint="@color/accent_cobalt_blue"
+                                android:thumbTint="@color/secondary_navy_blue"
+                                android:progressBackgroundTint="@color/medium_gray"
+                                android:layout_marginBottom="8dp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="1 min"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/medium_gray" />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="3 hours"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/medium_gray" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Test Notification Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnTestNotification"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Test Notification"
+                        android:textSize="14sp"
+                        android:textColor="@color/accent_cobalt_blue"
+                        app:strokeColor="@color/accent_cobalt_blue"
+                        android:layout_marginTop="16dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
         </LinearLayout>
 
     </LinearLayout>

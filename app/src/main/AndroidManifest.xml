@@ -41,6 +41,11 @@
             android:name=".activities.DashboardActivity"
             android:exported="false" />
 
+        <receiver
+            android:name=".services.HydrationReminderReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>

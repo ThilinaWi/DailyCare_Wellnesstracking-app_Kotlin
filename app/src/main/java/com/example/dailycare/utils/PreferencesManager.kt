@@ -145,12 +145,12 @@ class PreferencesManager private constructor(context: Context) {
         return prefs.getBoolean(KEY_HYDRATION_REMINDER_ENABLED, false)
     }
     
-    fun setHydrationInterval(intervalHours: Int) {
-        prefs.edit().putInt(KEY_HYDRATION_INTERVAL, intervalHours).apply()
+    fun setHydrationInterval(intervalMinutes: Int) {
+        prefs.edit().putInt(KEY_HYDRATION_INTERVAL, intervalMinutes).apply()
     }
     
     fun getHydrationInterval(): Int {
-        return prefs.getInt(KEY_HYDRATION_INTERVAL, 2) // Default 2 hours
+        return prefs.getInt(KEY_HYDRATION_INTERVAL, 60) // Default 60 minutes (1 hour)
     }
     
     // Utility Methods
