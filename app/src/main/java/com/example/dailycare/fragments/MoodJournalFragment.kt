@@ -48,6 +48,7 @@ class MoodJournalFragment : Fragment() {
         preferencesManager = PreferencesManager.getInstance(requireContext())
         setupMoodSelector()
         setupMoodDescriptionCard()
+        setupExportButton()
         setupMoodHistory()
         loadTodaysMood()
         loadMoodHistory()
@@ -57,6 +58,16 @@ class MoodJournalFragment : Fragment() {
         try {
             // Initially hide the description card
             binding.cardMoodDescription?.visibility = View.GONE
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    
+    private fun setupExportButton() {
+        try {
+            binding.btnExportMoods?.setOnClickListener {
+                exportMoodData()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -289,6 +300,109 @@ class MoodJournalFragment : Fragment() {
             }
         } catch (e: Exception) {
             // Handle any errors gracefully
+            e.printStackTrace()
+        }
+    }
+    
+    private fun exportMoodData() {
+        try {
+            val moodEntries = preferencesManager.getMoodEntries()
+            
+            if (moodEntries.isEmpty()) {
+                // Show message that there's no data to export
+                showNoDataMessage()
+                return
+            }
+            
+            // Create CSV content
+            val csvContent = generateMoodDataCSV(moodEntries)
+            
+            // Share the CSV content
+            shareMoodData(csvContent)
+            
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showExportErrorMessage()
+        }
+    }
+    
+    private fun generateMoodDataCSV(moodEntries: List<MoodEntry>): String {
+        val csvBuilder = StringBuilder()
+        
+        // Add CSV header
+        csvBuilder.append("Date,Time,Mood,Mood_Value,Description\n")
+        
+        // Add mood entries
+        moodEntries.sortedByDescending { it.timestamp }.forEach { entry ->
+            try {
+                val date = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+                    .format(java.util.Date(entry.timestamp))
+                val time = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+                    .format(java.util.Date(entry.timestamp))
+                val moodName = getMoodName(entry.moodValue)
+                val description = entry.description.replace(",", ";").replace("\n", " ")
+                
+                csvBuilder.append("$date,$time,${entry.emoji} $moodName,${entry.moodValue},\"$description\"\n")
+            } catch (e: Exception) {
+                // Skip this entry if there's an error
+                e.printStackTrace()
+            }
+        }
+        
+        return csvBuilder.toString()
+    }
+    
+    private fun getMoodName(value: Int): String {
+        return when (value) {
+            1 -> "Very Sad"
+            2 -> "Sad"
+            3 -> "Neutral"
+            4 -> "Happy"
+            5 -> "Very Happy"
+            else -> "Unknown"
+        }
+    }
+    
+    private fun shareMoodData(csvContent: String) {
+        try {
+            val shareIntent = android.content.Intent().apply {
+                action = android.content.Intent.ACTION_SEND
+                type = "text/plain"
+                putExtra(android.content.Intent.EXTRA_TEXT, csvContent)
+                putExtra(android.content.Intent.EXTRA_SUBJECT, "My Mood Data Export")
+            }
+            
+            val chooserIntent = android.content.Intent.createChooser(shareIntent, "Export Mood Data")
+            startActivity(chooserIntent)
+            
+        } catch (e: Exception) {
+            e.printStackTrace()
+            showExportErrorMessage()
+        }
+    }
+    
+    private fun showNoDataMessage() {
+        try {
+            val context = context ?: return
+            android.app.AlertDialog.Builder(context)
+                .setTitle("No Data to Export")
+                .setMessage("You haven't logged any moods yet. Add some mood entries first to export your data.")
+                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                .show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    
+    private fun showExportErrorMessage() {
+        try {
+            val context = context ?: return
+            android.app.AlertDialog.Builder(context)
+                .setTitle("Export Failed")
+                .setMessage("There was an error exporting your mood data. Please try again.")
+                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                .show()
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
