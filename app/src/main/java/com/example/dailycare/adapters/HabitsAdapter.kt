@@ -42,19 +42,7 @@ class HabitsAdapter(
                 tvHabitDate.text = "Created: ${habit.createdDate}"
                 
                 // Update completion status
-                if (habit.isCompleted) {
-                    cbHabitComplete.isChecked = true
-                    tvHabitStatus.text = "✅ Completed"
-                    tvHabitStatus.setTextColor(
-                        root.context.getColor(android.R.color.holo_green_dark)
-                    )
-                } else {
-                    cbHabitComplete.isChecked = false
-                    tvHabitStatus.text = "⏳ Pending"
-                    tvHabitStatus.setTextColor(
-                        root.context.getColor(android.R.color.holo_orange_dark)
-                    )
-                }
+                cbHabitComplete.isChecked = habit.isCompleted
 
                 // Click listeners
                 cbHabitComplete.setOnClickListener {
