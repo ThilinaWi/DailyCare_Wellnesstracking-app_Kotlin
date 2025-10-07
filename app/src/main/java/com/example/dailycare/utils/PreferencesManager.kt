@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.dailycare.models.Habit
 import com.example.dailycare.models.MoodEntry
+import com.example.dailycare.models.WaterIntake
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
@@ -22,6 +23,8 @@ class PreferencesManager private constructor(context: Context) {
         private const val KEY_USERS = "users"
         private const val KEY_HABITS = "habits"
         private const val KEY_MOOD_ENTRIES = "mood_entries"
+        private const val KEY_WATER_INTAKE = "water_intake"
+        private const val KEY_DAILY_WATER_GOAL = "daily_water_goal"
         private const val KEY_HYDRATION_REMINDER_ENABLED = "hydration_reminder_enabled"
         private const val KEY_HYDRATION_INTERVAL = "hydration_interval"
         
@@ -111,6 +114,26 @@ class PreferencesManager private constructor(context: Context) {
     fun getTodaysMoodEntry(): MoodEntry? {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         return getMoodEntries().find { it.date == today }
+    }
+    
+    // Water Intake Management
+    fun saveWaterIntake(waterIntakes: List<WaterIntake>) {
+        val json = gson.toJson(waterIntakes)
+        prefs.edit().putString(KEY_WATER_INTAKE, json).apply()
+    }
+    
+    fun getWaterIntake(): List<WaterIntake> {
+        val json = prefs.getString(KEY_WATER_INTAKE, null) ?: return emptyList()
+        val type = object : TypeToken<List<WaterIntake>>() {}.type
+        return gson.fromJson(json, type) ?: emptyList()
+    }
+    
+    fun setDailyWaterGoal(goalMl: Int) {
+        prefs.edit().putInt(KEY_DAILY_WATER_GOAL, goalMl).apply()
+    }
+    
+    fun getDailyWaterGoal(): Int {
+        return prefs.getInt(KEY_DAILY_WATER_GOAL, 2000) // Default 2000ml (2 liters)
     }
     
     // Hydration Reminders
