@@ -42,6 +42,7 @@
     <!-- Habit Tracker Strings -->
     <string name="daily_habits">Daily Habits</string>
     <string name="add_habit">Add New Habit</string>
+    <string name="edit_habit">Edit Habit</string>
     <string name="habit_name">Habit Name</string>
     <string name="habit_name_hint">E.g., Drink 8 glasses of water</string>
     <string name="habit_added">Habit added successfully!</string>

@@ -13,7 +13,8 @@ class HabitsAdapter(
 
     interface OnHabitClickListener {
         fun onHabitClick(habit: Habit, position: Int)
-        fun onHabitLongClick(habit: Habit, position: Int)
+        fun onEditHabit(habit: Habit, position: Int)
+        fun onDeleteHabit(habit: Habit, position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
@@ -56,17 +57,16 @@ class HabitsAdapter(
                 }
 
                 // Click listeners
-                root.setOnClickListener {
-                    listener.onHabitClick(habit, position)
-                }
-
-                root.setOnLongClickListener {
-                    listener.onHabitLongClick(habit, position)
-                    true
-                }
-
                 cbHabitComplete.setOnClickListener {
                     listener.onHabitClick(habit, position)
+                }
+
+                btnEditHabit.setOnClickListener {
+                    listener.onEditHabit(habit, position)
+                }
+
+                btnDeleteHabit.setOnClickListener {
+                    listener.onDeleteHabit(habit, position)
                 }
             }
         }

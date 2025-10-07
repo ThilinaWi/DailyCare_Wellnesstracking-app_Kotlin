@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dailycare.adapters.HabitsAdapter
 import com.example.dailycare.databinding.FragmentHabitsBinding
 import com.example.dailycare.dialogs.AddHabitDialog
+import com.example.dailycare.dialogs.EditHabitDialog
 import com.example.dailycare.models.Habit
 import com.example.dailycare.utils.PreferencesManager
 import java.util.*
@@ -77,6 +78,13 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitClickListener {
         }
         dialog.show(parentFragmentManager, "AddHabitDialog")
     }
+
+    private fun showEditHabitDialog(habit: Habit, position: Int) {
+        val dialog = EditHabitDialog(habit.name) { newHabitName ->
+            editHabit(habit, position, newHabitName)
+        }
+        dialog.show(parentFragmentManager, "EditHabitDialog")
+    }
     
     private fun addNewHabit(habitName: String) {
         val newHabit = Habit(
@@ -96,6 +104,15 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitClickListener {
         binding.recyclerViewHabits.visibility = View.VISIBLE
         
         Toast.makeText(context, "Habit added successfully!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun editHabit(habit: Habit, position: Int, newName: String) {
+        val updatedHabit = habit.copy(name = newName)
+        habitsList[position] = updatedHabit
+        saveHabits()
+        habitsAdapter.notifyItemChanged(position)
+        
+        Toast.makeText(context, "Habit updated successfully!", Toast.LENGTH_SHORT).show()
     }
     
     override fun onHabitClick(habit: Habit, position: Int) {
@@ -117,7 +134,11 @@ class HabitsFragment : Fragment(), HabitsAdapter.OnHabitClickListener {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
     
-    override fun onHabitLongClick(habit: Habit, position: Int) {
+    override fun onEditHabit(habit: Habit, position: Int) {
+        showEditHabitDialog(habit, position)
+    }
+
+    override fun onDeleteHabit(habit: Habit, position: Int) {
         // Show delete confirmation
         androidx.appcompat.app.AlertDialog.Builder(requireContext())
             .setTitle("Delete Habit")
