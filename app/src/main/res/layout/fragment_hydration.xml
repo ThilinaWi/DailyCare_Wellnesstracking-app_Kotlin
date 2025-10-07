@@ -189,86 +189,9 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="32dp">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnAdd1000ml"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="💧 1L"
-                    android:textSize="14sp"
-                    app:strokeColor="@color/accent_cobalt_blue"
-                    android:textColor="@color/accent_cobalt_blue"
-                    android:layout_marginEnd="8dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnCustomAmount"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="💧 Custom"
-                    android:textSize="14sp"
-                    app:strokeColor="@color/accent_cobalt_blue"
-                    android:textColor="@color/accent_cobalt_blue"
-                    android:layout_marginStart="8dp" />
 
-            </LinearLayout>
-
-            <!-- Today's Water History -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today's Water History"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_navy_blue" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnShareWaterData"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="📤 Share"
-                    android:textSize="12sp"
-                    android:textColor="@color/accent_cobalt_blue"
-                    app:strokeColor="@color/accent_cobalt_blue"
-                    app:cornerRadius="8dp"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="6dp" />
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewWaterHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false" />
-
-            <TextView
-                android:id="@+id/tvNoWaterHistory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No water intake recorded today. Start by adding some water!"
-                android:textSize="14sp"
-                android:textColor="@color/medium_gray"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:visibility="gone" />
 
             <!-- Hydration Reminders Card -->
             <com.google.android.material.card.MaterialCardView
