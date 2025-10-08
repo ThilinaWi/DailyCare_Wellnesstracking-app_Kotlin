@@ -178,6 +178,37 @@ class MoodJournalFragment : Fragment() {
         binding.recyclerViewMoodHistory.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = moodHistoryAdapter
+            // Enable nested scrolling for proper scrolling within NestedScrollView
+            isNestedScrollingEnabled = true
+        }
+    }
+    
+    private fun setRecyclerViewHeightBasedOnChildren() {
+        try {
+            val adapter = moodHistoryAdapter
+            var totalHeight = 0
+            val layoutManager = binding.recyclerViewMoodHistory.layoutManager as? LinearLayoutManager
+            
+            if (layoutManager != null && adapter.itemCount > 0) {
+                // Measure each item and calculate total height
+                for (i in 0 until adapter.itemCount) {
+                    val listItem = adapter.createViewHolder(binding.recyclerViewMoodHistory, adapter.getItemViewType(i))
+                    adapter.onBindViewHolder(listItem, i)
+                    listItem.itemView.measure(
+                        View.MeasureSpec.makeMeasureSpec(binding.recyclerViewMoodHistory.width, View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    )
+                    totalHeight += listItem.itemView.measuredHeight
+                }
+                
+                // Set the calculated height
+                val params = binding.recyclerViewMoodHistory.layoutParams
+                params.height = totalHeight
+                binding.recyclerViewMoodHistory.layoutParams = params
+            }
+        } catch (e: Exception) {
+            // If calculation fails, just use wrap_content
+            e.printStackTrace()
         }
     }
     
