@@ -153,6 +153,11 @@ class PreferencesManager private constructor(context: Context) {
         return prefs.getInt(KEY_HYDRATION_INTERVAL, 60) // Default 60 minutes (1 hour)
     }
     
+    // Session Management
+    fun clearUserSession() {
+        prefs.edit().clear().apply()
+    }
+    
     // Utility Methods
     fun getCurrentDateString(): String {
         return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
