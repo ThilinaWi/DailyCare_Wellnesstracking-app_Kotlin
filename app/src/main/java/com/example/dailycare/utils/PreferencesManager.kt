@@ -86,6 +86,15 @@ class PreferencesManager private constructor(context: Context) {
         val type = object : TypeToken<Map<String, String>>() {}.type
         return gson.fromJson(json, type) ?: emptyMap()
     }
+
+    // Debug method to check registered users (for development)
+    fun getUserCount(): Int {
+        return getUsers().size
+    }
+
+    fun userExists(username: String): Boolean {
+        return getUsers().containsKey(username)
+    }
     
     // Habits Management
     fun saveHabits(habits: List<Habit>) {
@@ -155,7 +164,12 @@ class PreferencesManager private constructor(context: Context) {
     
     // Session Management
     fun clearUserSession() {
-        prefs.edit().clear().apply()
+        // Only clear session-specific data, keep user registration data
+        prefs.edit()
+            .remove(KEY_CURRENT_USERNAME)
+            .remove(KEY_USER_LOGGED_IN)
+            .remove(KEY_ONBOARDING_COMPLETED)
+            .apply()
     }
     
     // Utility Methods

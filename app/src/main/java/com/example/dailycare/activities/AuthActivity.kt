@@ -93,6 +93,12 @@ class AuthActivity : AppCompatActivity() {
             return
         }
         
+        // Check if user exists first
+        if (!preferencesManager.userExists(username)) {
+            Toast.makeText(this, "User not found. Please sign up first.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
         val isValid = preferencesManager.validateUser(username, password)
         if (isValid) {
             preferencesManager.setCurrentUsername(username)
@@ -102,7 +108,7 @@ class AuthActivity : AppCompatActivity() {
             Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show()
             goToDashboard()
         } else {
-            Toast.makeText(this, "Invalid username or password", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Incorrect password. Please try again.", Toast.LENGTH_SHORT).show()
         }
     }
     
