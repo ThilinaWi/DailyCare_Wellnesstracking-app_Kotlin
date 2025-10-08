@@ -1,10 +1,16 @@
 package com.example.dailycare.fragments
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.dailycare.databinding.FragmentHydrationBinding
 import com.example.dailycare.models.WaterIntake
@@ -19,6 +25,20 @@ class HydrationFragment : Fragment() {
     
     private lateinit var preferencesManager: PreferencesManager
     private lateinit var hydrationReminderManager: HydrationReminderManager
+    
+    // Permission launcher for notification permission
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            Toast.makeText(requireContext(), "Notification permission granted!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Notification permission denied. Reminders may not work.", Toast.LENGTH_LONG).show()
+            // Optionally disable the reminder switch
+            binding.switchHydrationReminder?.isChecked = false
+            preferencesManager.setHydrationReminderEnabled(false)
+        }
+    }
     
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,9 +74,41 @@ class HydrationFragment : Fragment() {
         try {
             // Setup reminder toggle
             binding.switchHydrationReminder?.setOnCheckedChangeListener { _, isChecked ->
-                preferencesManager.setHydrationReminderEnabled(isChecked)
-                hydrationReminderManager.updateReminderSchedule()
-                updateReminderStatus()
+                if (isChecked) {
+                    // Check notification permission for Android 13+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        when {
+                            ContextCompat.checkSelfPermission(
+                                requireContext(),
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) == PackageManager.PERMISSION_GRANTED -> {
+                                // Permission already granted
+                                enableReminders()
+                            }
+                            shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                                // Show rationale and request permission
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Notification permission is needed for hydration reminders",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                            else -> {
+                                // Request permission directly
+                                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        }
+                    } else {
+                        // Pre-Android 13, no runtime permission needed
+                        enableReminders()
+                    }
+                } else {
+                    // Disable reminders
+                    preferencesManager.setHydrationReminderEnabled(false)
+                    hydrationReminderManager.updateReminderSchedule()
+                    updateReminderStatus()
+                }
             }
             
             // Setup interval SeekBar (1 minute to 3 hours = 1-180 minutes)
@@ -188,6 +240,12 @@ class HydrationFragment : Fragment() {
     }
     
 
+    
+    private fun enableReminders() {
+        preferencesManager.setHydrationReminderEnabled(true)
+        hydrationReminderManager.updateReminderSchedule()
+        updateReminderStatus()
+    }
     
     private fun loadTodaysWaterIntake() {
         try {

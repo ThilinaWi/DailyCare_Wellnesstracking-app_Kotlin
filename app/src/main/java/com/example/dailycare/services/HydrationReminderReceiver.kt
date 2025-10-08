@@ -20,8 +20,22 @@ class HydrationReminderReceiver : BroadcastReceiver() {
     }
     
     override fun onReceive(context: Context, intent: Intent) {
-        createNotificationChannel(context)
-        showHydrationNotification(context)
+        try {
+            val preferencesManager = com.example.dailycare.utils.PreferencesManager.getInstance(context)
+            
+            // Only show notification if reminders are enabled
+            if (preferencesManager.isHydrationReminderEnabled()) {
+                createNotificationChannel(context)
+                showHydrationNotification(context)
+                
+                // Schedule the next reminder
+                val reminderManager = com.example.dailycare.utils.HydrationReminderManager(context)
+                reminderManager.scheduleReminder()
+            }
+        } catch (e: Exception) {
+            // Log the error but don't crash
+            e.printStackTrace()
+        }
     }
     
     private fun createNotificationChannel(context: Context) {

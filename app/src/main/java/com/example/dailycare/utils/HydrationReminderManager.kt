@@ -38,21 +38,98 @@ class HydrationReminderManager(private val context: Context) {
         val triggerTime = System.currentTimeMillis() + intervalMillis
         
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTime,
-                    pendingIntent
-                )
-            } else {
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    triggerTime,
-                    pendingIntent
-                )
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                    // Android 12+ - Check if we can schedule exact alarms
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExactAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            triggerTime,
+                            pendingIntent
+                        )
+                    } else {
+                        // Fallback to inexact alarm
+                        alarmManager.setAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            triggerTime,
+                            pendingIntent
+                        )
+                    }
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingIntent
+                    )
+                }
+                else -> {
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingIntent
+                    )
+                }
             }
+            
+            // Schedule the next reminder immediately after this one
+            scheduleRepeatingReminder(intervalMillis)
+            
         } catch (e: SecurityException) {
             // Handle permission issues gracefully
+            e.printStackTrace()
+        } catch (e: Exception) {
+            // Handle any other issues
+            e.printStackTrace()
+        }
+    }
+    
+    private fun scheduleRepeatingReminder(intervalMillis: Long) {
+        val intent = Intent(context, HydrationReminderReceiver::class.java)
+        intent.putExtra("schedule_next", true)
+        
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            REMINDER_REQUEST_CODE + 1,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        val nextTriggerTime = System.currentTimeMillis() + (intervalMillis * 2)
+        
+        try {
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExactAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            nextTriggerTime,
+                            pendingIntent
+                        )
+                    } else {
+                        alarmManager.setAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            nextTriggerTime,
+                            pendingIntent
+                        )
+                    }
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        nextTriggerTime,
+                        pendingIntent
+                    )
+                }
+                else -> {
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        nextTriggerTime,
+                        pendingIntent
+                    )
+                }
+            }
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
